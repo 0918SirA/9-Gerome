@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATH 10 - Class Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>MATH 10 - Class Record</h1>
+    <label for="student-id">Enter your Student ID:</label>
+    <input type="text" id="student-id" placeholder="Enter your ID here">
+    <button onclick="fetchStudentRecord()">Get Record</button>
+
+    <div id="record-display"></div>
+</div>
+
+<script>
+    // Sample data representing student records with raw scores
+    const studentRecords = {
+        "AA1344": {
+            name: "Aldrin John Abuan",
+            writtenWorkRaw: 55,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+        },
+        "AF3767": {
+            name: "Fidel Amio III",
+            writtenWorkRaw: 69,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 13,
+            quarterTestTotal: 40
+	},
+        "AJ5736": {
+            name: "Joseph Gabriel Apolonio",
+            writtenWorkRaw: 61,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "AJ1423": {
+            name: "Jonathan Asio",
+            writtenWorkRaw: 68,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "BK9232": {
+            name: "Kyle Barbachano",
+            writtenWorkRaw: 65,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 12,
+            quarterTestTotal: 40
+	},
+        "BG6193": {
+            name: "Gently Bentoy",
+            writtenWorkRaw: 68,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "BR0646": {
+            name: "Racel James Bulatao",
+            writtenWorkRaw: 63,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 16,
+            quarterTestTotal: 40
+	},
+        "CS7235": {
+            name: "Santino Carlos",
+            writtenWorkRaw: 71,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "CM4586": {
+            name: "Marlon Corpuz",
+            writtenWorkRaw: 48,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 70,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "CK5496": {
+            name: "Kirk Phillipe Corpuz",
+            writtenWorkRaw: 50,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 70,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "DM2999": {
+            name: "Miguel del Rosario",
+            writtenWorkRaw: 46,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 12,
+            quarterTestTotal: 40
+	},
+        "DA1631": {
+            name: "Abner Zilas dela Cruz",
+            writtenWorkRaw: 66,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 14,
+            quarterTestTotal: 40
+	},
+        "DD9430": {
+            name: "Dustin Dizon",
+            writtenWorkRaw: 53,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "FJ8421": {
+            name: "James Fronda",
+            writtenWorkRaw: 57,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "GR0850": {
+            name: "Rommel Jay Godezano",
+            writtenWorkRaw: 43,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 12,
+            quarterTestTotal: 40
+	},
+        "GJ1039": {
+            name: "John Michael Gotidoc",
+            writtenWorkRaw: 42,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 21,
+            quarterTestTotal: 40
+	},
+        "LH4998": {
+            name: "Harold Lacap",
+            writtenWorkRaw: 16,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 8,
+            quarterTestTotal: 40
+	},
+        "LJ3227": {
+            name: "John Ronald Lopez",
+            writtenWorkRaw: 62,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 20,
+            quarterTestTotal: 40
+	},
+        "MM8781": {
+            name: "Mark Danver Morales",
+            writtenWorkRaw: 57,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 5,
+            quarterTestTotal: 40
+	},
+        "PJ1569": {
+            name: "John Carlo Pasion",
+            writtenWorkRaw: 58,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 13,
+            quarterTestTotal: 40
+	},
+        "PN1345": {
+            name: "Nathan Leo Prado",
+            writtenWorkRaw: 41,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "RJ5479": {
+            name: "John Rey Rosario",
+            writtenWorkRaw: 76,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 14,
+            quarterTestTotal: 40
+	},
+        "SC3180": {
+            name: "Carmelo Santos",
+            writtenWorkRaw: 48,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "TR5406": {
+            name: "Raniel Jeric Tamayo",
+            writtenWorkRaw: 19,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 12,
+            quarterTestTotal: 40
+	},
+        "TA2462": {
+            name: "Angelo Torres",
+            writtenWorkRaw: 46,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "VJ7782": {
+            name: "John Hurry Luis Valdez",
+            writtenWorkRaw: 55,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 6,
+            quarterTestTotal: 40
+	},
+        "VJ8884": {
+            name: "John Loyd Vinuya",
+            writtenWorkRaw: 66,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 10,
+            quarterTestTotal: 40
+	},
+        "ZS2393": {
+            name: "Sherwin Zabala",
+            writtenWorkRaw: 38,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 5,
+            quarterTestTotal: 40
+	},
+        "AA9908": {
+            name: "Arian Agdeppa",
+            writtenWorkRaw: 46,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 8,
+            quarterTestTotal: 40
+	},
+        "BB5127": {
+            name: "Baby Kim Bagcal",
+            writtenWorkRaw: 54,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 10,
+            quarterTestTotal: 40
+	},
+        "BM2550": {
+            name: "Maya Baysa",
+            writtenWorkRaw: 46,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 70,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 15,
+            quarterTestTotal: 40
+	},
+        "BJ0251": {
+            name: "Julie Ann Bulatao",
+            writtenWorkRaw: 59,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 12,
+            quarterTestTotal: 40
+	},
+        "BB3656": {
+            name: "Bernadette Bulatao",
+            writtenWorkRaw: 52,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "CJ2779": {
+            name: "Jhanelle Cabanes",
+            writtenWorkRaw: 72,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "CM2306": {
+            name: "Mariel Cornel",
+            writtenWorkRaw: 53,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 12,
+            quarterTestTotal: 40
+	},
+        "CE0233": {
+            name: "Eliza Cuartelon",
+            writtenWorkRaw: 66,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 13,
+            quarterTestTotal: 40
+	},
+        "CY2132": {
+            name: "Yisha Jean Cruzat",
+            writtenWorkRaw: 27,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 8,
+            quarterTestTotal: 40
+	},
+        "DJ1510": {
+            name: "Janie Lee David",
+            writtenWorkRaw: 72,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 14,
+            quarterTestTotal: 40
+	},
+        "DK1135": {
+            name: "Kristine Carla David",
+            writtenWorkRaw: 48,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 14,
+            quarterTestTotal: 40
+	},
+        "EM8908": {
+            name: "Mariane Angela Erguiza",
+            writtenWorkRaw: 52,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 7,
+            quarterTestTotal: 40
+	},
+        "FI0776": {
+            name: "Izabella Gabriel Flores",
+            writtenWorkRaw: 56,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 7,
+            quarterTestTotal: 40
+	},
+        "GC3560": {
+            name: "Crystalyn Mae Gabo",
+            writtenWorkRaw: 73,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 14,
+            quarterTestTotal: 40
+	},
+        "GA6329": {
+            name: "Adrea Mae Gascon",
+            writtenWorkRaw: 69,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 10,
+            quarterTestTotal: 40
+	},
+        "LC0366": {
+            name: "Christian Adrianne Larawan",
+            writtenWorkRaw: 22,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "MJ8168": {
+            name: "Jasmine Macadangdang",
+            writtenWorkRaw: 27,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 15,
+            quarterTestTotal: 40
+	},
+        "MT9676": {
+            name: "Trisha Macadangdang",
+            writtenWorkRaw: 42,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 15,
+            quarterTestTotal: 40
+	},
+        "NI8500": {
+            name: "Izadaimel Nunag",
+            writtenWorkRaw: 45,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 10,
+            quarterTestTotal: 40
+	},
+        "PA3202": {
+            name: "Angeline Peralta",
+            writtenWorkRaw: 18,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "PP5507": {
+            name: "Princess Faye Puyaoan",
+            writtenWorkRaw: 58,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 5,
+            quarterTestTotal: 40
+	},
+        "SG4481": {
+            name: "Glaiza Sagabaen",
+            writtenWorkRaw: 61,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 11,
+            quarterTestTotal: 40
+	},
+        "SJ6085": {
+            name: "Juliet Ann Suarez",
+            writtenWorkRaw: 76,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 21,
+            quarterTestTotal: 40
+	},
+        "TK7070": {
+            name: "Keeshia Tomas",
+            writtenWorkRaw: 47,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 14,
+            quarterTestTotal: 40
+	},
+        "TA1154": {
+            name: "Althea Tulabot",
+            writtenWorkRaw: 35,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "TA7732": {
+            name: "Alexa Jean Tulabot",
+            writtenWorkRaw: 50,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 13,
+            quarterTestTotal: 40
+	},
+        "UM2721": {
+            name: "Majorie Ubaldo",
+            writtenWorkRaw: 69,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 15,
+            quarterTestTotal: 40
+	},
+        "UB7883": {
+            name: "Betty Umagtang",
+            writtenWorkRaw: 64,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 21,
+            quarterTestTotal: 40
+	},
+        "VE3503": {
+            name: "Eunice Joy Valdez",
+            writtenWorkRaw: 70,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 22,
+            quarterTestTotal: 40
+	},
+        "VD1538": {
+            name: "Daniella Victorio",
+            writtenWorkRaw: 47,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 80,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 9,
+            quarterTestTotal: 40
+	},
+        "VC9702": {
+            name: "Christine Villamor",
+            writtenWorkRaw: 13,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 23,
+            quarterTestTotal: 40
+	},
+        "VP9759": {
+            name: "Princess Vinluan",
+            writtenWorkRaw: 27,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 100,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 6,
+            quarterTestTotal: 40
+	},
+        "VJ6258": {
+            name: "Julie Ann Vinluan",
+            writtenWorkRaw: 30,
+            writtenWorkTotal: 88,
+            performanceTaskRaw: 90,
+            performanceTaskTotal: 100,
+            quarterTestRaw: 8,
+            quarterTestTotal: 40
+        }
+    };
+
+    // Transmutation table (truncated for brevity)
+    const transmutationTable = [
+        { min: 100, transmuted: 100 },
+        { min: 98.40, max: 99.99, transmuted: 99 },
+        { min: 96.80, max: 98.39, transmuted: 98 },
+        { min: 95.20, max: 96.79, transmuted: 97 },
+        { min: 93.60, max: 95.19, transmuted: 96 },
+        { min: 92.00, max: 93.59, transmuted: 95 },
+        { min: 90.40, max: 91.99, transmuted: 94 },
+        { min: 88.80, max: 90.39, transmuted: 93 },
+        { min: 87.20, max: 88.79, transmuted: 92 },
+        { min: 85.60, max: 87.19, transmuted: 91 },
+        { min: 84.00, max: 85.59, transmuted: 90 },
+        { min: 82.40, max: 83.99, transmuted: 89 },
+        { min: 80.80, max: 82.39, transmuted: 88 },
+        { min: 79.20, max: 80.79, transmuted: 87 },
+        { min: 77.60, max: 79.19, transmuted: 86 },
+        { min: 76.00, max: 77.59, transmuted: 85 },
+        { min: 74.40, max: 75.99, transmuted: 84 },
+        { min: 72.80, max: 74.39, transmuted: 83 },
+        { min: 71.20, max: 72.79, transmuted: 82 },
+        { min: 69.60, max: 71.19, transmuted: 81 },
+        { min: 68.00, max: 69.59, transmuted: 80 },
+        { min: 66.40, max: 67.99, transmuted: 79 },
+        { min: 64.80, max: 66.39, transmuted: 78 },
+        { min: 63.20, max: 64.79, transmuted: 77 },
+        { min: 61.60, max: 63.19, transmuted: 76 },
+        { min: 60.00, max: 61.59, transmuted: 75 },
+        { min: 56.00, max: 59.99, transmuted: 74 },
+        { min: 52.00, max: 55.99, transmuted: 73 },
+        { min: 48.00, max: 51.99, transmuted: 72 },
+        { min: 44.00, max: 47.99, transmuted: 71 },
+        { min: 40.00, max: 43.99, transmuted: 70 },
+        { min: 36.00, max: 39.99, transmuted: 69 },
+        { min: 32.00, max: 35.99, transmuted: 68 },
+        { min: 28.00, max: 31.99, transmuted: 67 },
+        { min: 24.00, max: 27.99, transmuted: 66 },
+        { min: 20.00, max: 23.99, transmuted: 65 },
+        { min: 16.00, max: 19.99, transmuted: 64 },
+        { min: 12.00, max: 15.99, transmuted: 63 },
+        { min: 8.00, max: 11.99, transmuted: 62 },
+        { min: 4.00, max: 7.99, transmuted: 61 },
+        { min: 0.00, max: 3.99, transmuted: 60 },
+    ];
+
+    function fetchStudentRecord() {
+        const studentId = document.getElementById('student-id').value;
+        const recordDisplay = document.getElementById('record-display');
+
+        // Clear any previous records
+        recordDisplay.innerHTML = '';
+
+        if (studentRecords[studentId]) {
+            const student = studentRecords[studentId];
+
+            // Calculate percentage and weighted scores
+            const writtenWorkPercentage = (student.writtenWorkRaw / student.writtenWorkTotal * 100).toFixed(2);
+            const performanceTaskPercentage = (student.performanceTaskRaw / student.performanceTaskTotal * 100).toFixed(2);
+            const quarterTestPercentage = (student.quarterTestRaw / student.quarterTestTotal * 100).toFixed(2);
+
+            const writtenWorkWeighted = (writtenWorkPercentage * 0.4).toFixed(2);
+            const performanceTaskWeighted = (performanceTaskPercentage * 0.4).toFixed(2);
+            const quarterTestWeighted = (quarterTestPercentage * 0.2).toFixed(2);
+
+            const initialGrade = (
+                parseFloat(writtenWorkWeighted) +
+                parseFloat(performanceTaskWeighted) +
+                parseFloat(quarterTestWeighted)
+            ).toFixed(2);
+
+            // Transmute initial grade using the transmutation table
+            const transmutedGrade = transmuteGrade(initialGrade);
+
+            const recordHtml = `
+                <h2>${student.name}</h2>
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Raw Score</th>
+                        <th>Total Score</th>
+                        <th>Score (%)</th>
+                        <th>Weighted Score</th>
+                    </tr>
+                    <tr>
+                        <td>Written Work</td>
+                        <td>${student.writtenWorkRaw}</td>
+                        <td>${student.writtenWorkTotal}</td>
+                        <td>${writtenWorkPercentage}%</td>
+                        <td>${writtenWorkWeighted}</td>
+                    </tr>
+                    <tr>
+                        <td>Performance Task</td>
+                        <td>${student.performanceTaskRaw}</td>
+                        <td>${student.performanceTaskTotal}</td>
+                        <td>${performanceTaskPercentage}%</td>
+                        <td>${performanceTaskWeighted}</td>
+                    </tr>
+                    <tr>
+                        <td>Quarter Test</td>
+                        <td>${student.quarterTestRaw}</td>
+                        <td>${student.quarterTestTotal}</td>
+                        <td>${quarterTestPercentage}%</td>
+                        <td>${quarterTestWeighted}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Initial Grade</strong></td>
+                        <td colspan="4"><strong>${initialGrade}</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transmuted Grade</strong></td>
+                        <td colspan="4"><strong>${transmutedGrade}</strong></td>
+                    </tr>
+                </table>
+                <p style="margin-top: 20px; font-weight: bold; color: red;">
+                    NOTE: This is your FINAL GRADE. This grade will APPEAR in your Report Card.
+                </p>
+            `;
+            recordDisplay.innerHTML = recordHtml;
+        } else {
+            recordDisplay.innerHTML = `<p>No record found for Student ID: ${studentId}</p>`;
+        }
+    }
+
+    function transmuteGrade(grade) {
+        grade = parseFloat(grade);
+        for (let i = 0; i < transmutationTable.length; i++) {
+            const { min, max, transmuted } = transmutationTable[i];
+            if (grade >= min && grade <= max) {
+                return transmuted;
+            }
+        }
+        return 0; // Return 0 if no matching grade found
+    }
+</script>
+
+</body>
+</html>
